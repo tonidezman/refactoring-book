@@ -38,7 +38,9 @@ def statement(invoice, plays)
 
     # print line for this order
     result +=
-      "  #{play['name']}: #{format(this_amount / 100.0)} (#{perf['audience']} seats)\n"
+      "  #{play['name']}: #{format(this_amount / 100.0)} (#{
+        perf['audience']
+      } seats)\n"
     total_amount += this_amount
   end
   result += "Amount owed is #{format(total_amount / 100.0)}\n"
