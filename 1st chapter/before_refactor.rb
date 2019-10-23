@@ -4,6 +4,10 @@ require 'pry'
 plays = JSON.parse(File.read('plays.json'))
 invoices = JSON.parse(File.read('invoices.json'))
 
+def format(money)
+  "$#{sprintf('%.2f', money)}"
+end
+
 def statement(invoice, plays)
   totalAmount = 0
   volumeCredits = 0
@@ -34,10 +38,10 @@ def statement(invoice, plays)
 
     # print line for this order
     result +=
-      "  #{play['name']}: #{(thisAmount / 100.0)} (#{perf['audience']} seats)\n"
+      "  #{play['name']}: #{format(thisAmount / 100.0)} (#{perf['audience']} seats)\n"
     totalAmount += thisAmount
   end
-  result += "Amount owed is #{(totalAmount / 100.0)}\n"
+  result += "Amount owed is #{format(totalAmount / 100.0)}\n"
   result += "You earned #{volumeCredits} credits\n"
   result
 end
