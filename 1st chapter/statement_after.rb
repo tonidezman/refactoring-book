@@ -2,6 +2,22 @@ def format(money)
   "$#{sprintf('%.2f', money)}"
 end
 
+def amount_for(perf, play)
+  case play['type']
+  when 'tragedy'
+    this_amount = 40_000
+    this_amount += 1_000 * (perf['audience'] - 30) if perf['audience'] > 30
+  when 'comedy'
+    this_amount = 30_000
+    if perf['audience'] > 20
+      this_amount += 10_000 + 500 * (perf['audience'] - 20)
+    end
+    this_amount += 300 * perf['audience']
+  else
+    raise "unknown type: #{play['type']}"
+  end
+end
+
 def statement(invoice, plays)
   total_amount = 0
   volume_credits = 0
@@ -9,21 +25,7 @@ def statement(invoice, plays)
 
   invoice['performances'].each do |perf|
     play = plays[perf['playID']]
-    this_amount = 0
-
-    case play['type']
-    when 'tragedy'
-      this_amount = 40_000
-      this_amount += 1_000 * (perf['audience'] - 30) if perf['audience'] > 30
-    when 'comedy'
-      this_amount = 30_000
-      if perf['audience'] > 20
-        this_amount += 10_000 + 500 * (perf['audience'] - 20)
-      end
-      this_amount += 300 * perf['audience']
-    else
-      raise "unknown type: #{play['type']}"
-    end
+    this_amount = amount_for(perf, play)
 
     # add volume credits
     volume_credits += [perf['audience'] - 30, 0].max
