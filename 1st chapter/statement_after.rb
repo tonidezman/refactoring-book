@@ -1,9 +1,3 @@
-require 'json'
-require 'pry'
-
-plays = JSON.parse(File.read('plays.json'))
-invoices = JSON.parse(File.read('invoices.json'))
-
 def format(money)
   "$#{sprintf('%.2f', money)}"
 end
@@ -47,5 +41,3 @@ def statement(invoice, plays)
   result += "You earned #{volume_credits} credits\n"
   result
 end
-
-puts statement(invoices.first, plays)
